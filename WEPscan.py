@@ -80,4 +80,3 @@ cmd2 = subprocess.Popen(['sudo', '-S'] + cmd, stdin=cmd1.stdout, stdout=subproce
 output = cmd2.stdout.read().decode()
 #call('echo {} | sudo -S {}'.format(pwd, cmd), shell=True)
 
-print('Y QUEEE BROOO')
